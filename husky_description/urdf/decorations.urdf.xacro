@@ -171,6 +171,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
             </geometry>
           </collision>
         </link>
+
         <!-- Attach top plate -->
         <joint name="top_plate_joint" type="fixed">
           <parent link="base_link" />
@@ -229,6 +230,59 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
       <link name="top_plate_rear_link"/>
     </xacro:if>
 
+    <!-- connection link -->
+    <link name = "connection">
+      <visual>
+        <geometry>
+          <box size="0.1 0.1 1.0" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.1 0.1 0.3" />
+        </geometry>
+      </collision>
+      <inertial>
+            <mass value="2" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+    <gazebo reference="connection">
+    </gazebo>
+
+    <!-- Attach connection to top plate -->
+    <joint name="connection_joint" type="fixed">
+      <parent link="top_plate_link" />
+      <child link="connection" />
+      <origin xyz="0 0 0.5" rpy="0 0 0" />
+    </joint>
+
+    <!-- Aruco marker link -->
+    <link name = "Aruco_marker">
+      <visual>
+        <geometry>
+          <mesh filename="package://husky_description/meshes/Aruco_marker.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://husky_description/meshes/Aruco_marker.dae" />
+        </geometry>
+      </collision>
+      <inertial>
+            <mass value="4" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+    <gazebo reference="Aruco_marker">
+    </gazebo>
+
+    <!-- Attach Aruco_marker to connection -->
+    <joint name="Aruco_marker_joint" type="fixed">
+      <parent link="connection" />
+      <child link="Aruco_marker" />
+      <origin xyz="0 0 0.5" rpy="1.5707963 -1.5707963 0" />
+    </joint>
   </xacro:macro>
 
 </robot>
